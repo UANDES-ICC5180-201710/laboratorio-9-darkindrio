@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609113038) do
+ActiveRecord::Schema.define(version: 20170611030513) do
 
   create_table "assignments", force: :cascade do |t|
     t.string   "title"
@@ -50,6 +50,31 @@ ActiveRecord::Schema.define(version: 20170609113038) do
     t.datetime "updated_at",    null: false
     t.index ["assignment_id"], name: "index_grades_on_assignment_id"
     t.index ["person_id"], name: "index_grades_on_person_id"
+  end
+
+  create_table "interests", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "curse_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "like_tests", force: :cascade do |t|
+    t.integer  "person_id"
+    t.integer  "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_like_tests_on_course_id"
+    t.index ["person_id"], name: "index_like_tests_on_person_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer  "course_id_id"
+    t.integer  "student_id_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["course_id_id"], name: "index_likes_on_course_id_id"
+    t.index ["student_id_id"], name: "index_likes_on_student_id_id"
   end
 
   create_table "people", force: :cascade do |t|

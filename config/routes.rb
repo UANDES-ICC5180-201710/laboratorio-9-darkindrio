@@ -15,5 +15,7 @@ Rails.application.routes.draw do
     root to: 'courses#index'
   end
 
+  post "/add_like" => "courses#addLike"
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

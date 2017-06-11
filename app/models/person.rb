@@ -5,6 +5,8 @@ class Person < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :enrollments
   has_many :courses, through: :enrollments, :dependent => :delete_all
+  has_many :likes
+  has_many :preferences, through: :likes
 
   validates :first_name, length: { minimum: 3,  maximum: 30 }, presence: true
   validates :last_name, length: { minimum: 3,  maximum: 30 }, presence: true

@@ -5,11 +5,23 @@ class CoursesController < ApplicationController
   # GET /courses.json
   def index
     @courses = Course.all
-
+    puts @courses[0].isLike(current_person.id)
+    
     if params[:title]
       @courses = @courses.where("lower(title) like ?", "%#{params[:title]}%")
     end
   end
+
+
+  def idLikeForTheCurrentUser(course_id)
+    currentLike = LikeTest.where(course_id: course_id, person_id: current_person.id).take
+    if currentLike
+      return true
+    else
+      return false
+    end 
+  end
+
 
   # GET /courses/1
   # GET /courses/1.json
@@ -62,6 +74,31 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to courses_url, notice: 'Course was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def addLike
+    course_id = params[:course_id]
+
+    @currentLike = LikeTest.where(course_id: course_id, person_id: current_person.id).take
+    if @currentLike
+      @currentLike.destroy
+      respond_to do |format|
+        format.json { render json: {"state" => "success", "isLike" => "false"}}
+        format.json { head :no_content }
+      end
+    else
+      current_course = Course.find(course_id)
+      @newLike = LikeTest.new
+      @newLike.person_id = current_person.id
+      @newLike.course_id = course_id
+      respond_to do |format|
+        if @newLike.save
+          format.json { render json: {"state" => "success", "isLike" => "true"}}
+        else
+          format.json { render json: {"state" => "error", "isLike" => "error"}}
+        end
+      end
     end
   end
 
